@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { validateBody } from '../../middleware/validateBody.middleware';
 import {ProductSchema} from '../../DTO/product.dto';
 import ListProduct from './ListProduct';
+import UpdateModal from './UpdateModal';
 
 function Products() {
 
@@ -13,7 +14,9 @@ function Products() {
   // const [List_product, setListProduct] = useState([]);
 
   const [product,setProduct]= useState([]);
+
   const [updateProduct,setupdateProduct]= useState({});
+
   useEffect(()=> {
     axios.get('http://127.0.0.1:8000/products/')
       .then(res => {
@@ -80,7 +83,8 @@ function Products() {
   
   async function handleUpdate(id){
     try {
-      const temp= setupdateProduct((product.filter(item => item.id === id)).pop());
+      
+      setupdateProduct((product.filter(item => item.id === id)).pop());
       
     } catch (error) {
       
@@ -104,26 +108,27 @@ function Products() {
       }
 
       console.log(itemUpdate);
-      // axios.put(`http://127.0.0.1:8000/products/${updateProduct.id}/`, itemUpdate)
-      //     .then(data => {
-      //       itemUpdate.id= updateProduct.id;
+      document.getElementById("updateproduct").reset();
+      axios.put(`http://127.0.0.1:8000/products/${updateProduct.id}/`, itemUpdate)
+          .then(data => {
+            itemUpdate.id= updateProduct.id;
 
-      //       // const indexUpdate= product.findIndex(item => item.id ===updateProduct.id);
-      //       // var tempProduct = product;
-      //       // tempProduct[indexUpdate]=updateProduct;
-      //       // setProduct(tempProduct);
-      //       // console.log(indexUpdate);
+            // const indexUpdate= product.findIndex(item => item.id ===updateProduct.id);
+            // var tempProduct = product;
+            // tempProduct[indexUpdate]=updateProduct;
+            // setProduct(tempProduct);
+            // console.log(indexUpdate);
 
-      //       const tempListProduct=[];
-      //       product.forEach((item)=> {
-      //         if (item.id===itemUpdate.id) 
-      //            tempListProduct.push(itemUpdate);
-      //         else tempListProduct.push(item);
-      //       });
-      //       setProduct(tempListProduct);
+            const tempListProduct=[];
+            product.forEach((item)=> {
+              if (item.id===itemUpdate.id) 
+                 tempListProduct.push(itemUpdate);
+              else tempListProduct.push(item);
+            });
+            setProduct(tempListProduct);
             
-      //     })
-      //     .catch(err => alert("Update failed"));
+          })
+          .catch(err => alert("Update failed"));
     } catch (error) {
       alert("Update failed");
       throw error;
@@ -180,43 +185,8 @@ function Products() {
       </div> {/*Modal End*/}
 
       {/*Modal Update*/}
-      <div>
-      <div id="updateModal" className="modal fade" role="dialog">
-      <div className="modal-dialog">
-
-        
-          <div className="modal-content">
-          <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal">&times;</button>
-              <h4 className="modal-title">Update Product</h4>
-          </div>
-          <div className="modal-body">
-                <form action="#">
-                  <div class="form-group">
-                    <label for="upname">Name:</label>
-                    <input type="text" class="form-control" id="upname" defaultValue={updateProduct.name}/>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="upimg">Img:</label>
-                    <input type="text" class="form-control" id="upimg" defaultValue={updateProduct.img}/>
-                  </div>
-                  <div class="form-group">
-                    <label for="upprice">Price:</label>
-                    <input type="number" class="form-control" id="upprice" defaultValue={updateProduct.price}/>
-                  </div>
-                </form>
-          </div>
-          <div className="modal-footer">
-              <button type="button" className="btn btn-success" data-dismiss="modal" onClick={UpdateService}>Update</button>
-              <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-          </div>
-
-      </div>
-      </div>
-      </div>
-
+     
+      <UpdateModal updateProduct={updateProduct} UpdateService={UpdateService}/>
       <ListProduct listrecord= {product} handleDelete={handleDelete} handleUpdate={handleUpdate}/>
       {/* <div className="table1" >
         <table  className="table table-bordered table-striped ">
