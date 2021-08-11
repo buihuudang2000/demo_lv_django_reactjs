@@ -12,7 +12,7 @@
 // }
 
 export function validateBody(schema, data){
-    return () => {
+    
         try{
             const {error, value} = schema.validate(data);
             if (error) return {status: "fail", message: error.message}
@@ -21,5 +21,5 @@ export function validateBody(schema, data){
         } catch(error){
             throw error;
         }
-    }
+    
 }

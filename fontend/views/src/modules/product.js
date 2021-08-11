@@ -8,25 +8,22 @@ import {ProductSchema} from '../DTO/product.dto';
 function Products() {
 
   var id_delete=-1;
-  function Delete(id){
-    id_delete=id;
-    console.log("delete ", id_delete);
-  }
-
   var id_update=-1;
-  function Update(id){
-    id_update=id;
-    console.log("update ",id_update);
-  }
-
+  const [List_product, setListProduct] = useState([]);
   const [product,setProduct]= useState([]);
-
   useEffect(()=> {
-    axios.get('http://127.0.0.1:8000/api/')
-      .then(res => setProduct(res.data))
+    axios.get('http://127.0.0.1:8000/products/')
+      .then(res => {
+        setProduct(res.data);
+        
+      })
       .catch(err => console.log(err));
 
   },[]);
+
+  // window.onload = function() {
+  //   loadRecord();
+  // };
 
   function insertProduct(){
     try {
@@ -37,37 +34,62 @@ function Products() {
       };
      
       const checkInput = validateBody(ProductSchema, inputProduct);
-      if (checkInput.status == "fail") {
+      if (checkInput.status === "fail") {
         alert(checkInput.message);
         return;
       }
-      console.log(inputProduct);
-      // useEffect(()=> {
-      //   axios.get('http://127.0.0.1:8000/api/')
-      //     .then(res => setProduct(res.data))
-      //     .catch(err => console.log(err));
-    
-      // },[]);
+      
+
+      axios.post('http://127.0.0.1:8000/products/', inputProduct)
+          .then(data => {
+            document.getElementById("insertproduct").reset();
+            alert("Insert successfullly");
+          })
+          .catch(err => alert("Insert failed"));
+      
+      
+    } catch (error) {
+      alert("Insert failed");
+      throw error;
+    }
+  }
+
+  function Delete(id){
+    id_delete=id;
+    console.log("delete ", id_delete);
+  }
+
+  
+  function Update(id){
+    id_update=id;
+    console.log("update ",id_update);
+  }
+
+  function loadRecord(){
+    try {
+      console.log(product);
+      List_product= setListProduct(product.map((item,index) =>
+                <tr key={index}>
+                  <td className="col-md-1">{item.id}</td>
+                  <td className="col-md-1"> <img src={item.img} className="picture " style={{width: "30px"}} alt="Picture"></img></td>
+                  <td>{item.name}</td>
+                  <td className="col-md-2">{item.price}</td>
+                  <td className="col-md-2"><button onClick={() => Update(item.index)} id="update" type="button" className="btn btn-primary" data-toggle="modal" data-target="#updateModal"> <i className="fas fa-edit"></i> </button>
+                  <button onClick={() => Delete(item.index)} style={{marginLeft: "5px"}}  type="button" className="btn btn-danger" id="delete"> <i className="fas fa-trash-alt"></i> </button>
+                  </td>
+                </tr>
+      )
+      );
+      console.log(List_product);
       
     } catch (error) {
       throw error;
     }
   }
-  console.log(product);
-  var List_product= product.map((item,index) =>
-            <tr key={index}>
-              <td className="col-md-1">{item.id}</td>
-              <td className="col-md-1"> <img src={item.img} className="picture " style={{width: "30px"}} alt="Picture"></img></td>
-              <td>{item.name}</td>
-              <td className="col-md-2">{item.price}</td>
-              <td className="col-md-2"><button onClick={() => Update(item.index)} id="update" type="button" className="btn btn-primary" data-toggle="modal" data-target="#updateModal"> <i className="fas fa-edit"></i> </button>
-              <button onClick={() => Delete(item.index)} style={{marginLeft: "5px"}}  type="button" className="btn btn-danger" id="delete"> <i className="fas fa-trash-alt"></i> </button>
-              </td>
-            </tr>
-  );
+  
 
   return (
-    <div >
+    <div onload={loadRecord}>
     <Nav page="products"/>
     
     <div className="body">
@@ -88,7 +110,7 @@ function Products() {
               <h4 className="modal-title">Modal Header</h4>
           </div>
           <div className="modal-body">
-                <form action="#" >
+                <form action="#" id="insertproduct">
                   <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" class="form-control" name="name" id="name"/>
