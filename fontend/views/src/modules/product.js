@@ -15,7 +15,6 @@ function Products() {
     axios.get('http://127.0.0.1:8000/products/')
       .then(res => {
         setProduct(res.data);
-        
       })
       .catch(err => console.log(err));
 
@@ -65,10 +64,9 @@ function Products() {
     console.log("update ",id_update);
   }
 
-  function loadRecord(){
-    try {
+  const loadRecord= () =>{
       console.log(product);
-      List_product= setListProduct(product.map((item,index) =>
+      setListProduct(product.map((item,index) =>
                 <tr key={index}>
                   <td className="col-md-1">{item.id}</td>
                   <td className="col-md-1"> <img src={item.img} className="picture " style={{width: "30px"}} alt="Picture"></img></td>
@@ -81,11 +79,10 @@ function Products() {
       )
       );
       console.log(List_product);
-      
-    } catch (error) {
-      throw error;
-    }
+      return 1;
   }
+      
+ 
   
 
   return (
