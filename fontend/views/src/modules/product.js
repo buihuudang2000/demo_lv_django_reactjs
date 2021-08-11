@@ -4,12 +4,14 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { validateBody } from '../middleware/validateBody.middleware';
 import {ProductSchema} from '../DTO/product.dto';
+import ListProduct from './ListProduct';
 
 function Products() {
 
   var id_delete=-1;
   var id_update=-1;
-  const [List_product, setListProduct] = useState([]);
+  // const [List_product, setListProduct] = useState([]);
+
   const [product,setProduct]= useState([]);
   useEffect(()=> {
     axios.get('http://127.0.0.1:8000/products/')
@@ -42,6 +44,8 @@ function Products() {
       axios.post('http://127.0.0.1:8000/products/', inputProduct)
           .then(data => {
             document.getElementById("insertproduct").reset();
+            const idproduct= product.length +1;
+            setProduct( [...product, {id: idproduct, ...inputProduct}]);
             alert("Insert successfullly");
           })
           .catch(err => alert("Insert failed"));
@@ -64,29 +68,8 @@ function Products() {
     console.log("update ",id_update);
   }
 
-  const loadRecord= () =>{
-      console.log(product);
-      setListProduct(product.map((item,index) =>
-                <tr key={index}>
-                  <td className="col-md-1">{item.id}</td>
-                  <td className="col-md-1"> <img src={item.img} className="picture " style={{width: "30px"}} alt="Picture"></img></td>
-                  <td>{item.name}</td>
-                  <td className="col-md-2">{item.price}</td>
-                  <td className="col-md-2"><button onClick={() => Update(item.index)} id="update" type="button" className="btn btn-primary" data-toggle="modal" data-target="#updateModal"> <i className="fas fa-edit"></i> </button>
-                  <button onClick={() => Delete(item.index)} style={{marginLeft: "5px"}}  type="button" className="btn btn-danger" id="delete"> <i className="fas fa-trash-alt"></i> </button>
-                  </td>
-                </tr>
-      )
-      );
-      console.log(List_product);
-      return 1;
-  }
-      
- 
-  
-
   return (
-    <div onload={loadRecord}>
+    <div >
     <Nav page="products"/>
     
     <div className="body">
@@ -172,7 +155,8 @@ function Products() {
       </div>
       </div>
 
-      <div className="table1" >
+      <ListProduct listrecord= {product}/>
+      {/* <div className="table1" >
         <table  className="table table-bordered table-striped ">
           <thead >
             <tr>
@@ -187,7 +171,7 @@ function Products() {
             {List_product}
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       
     </div>
