@@ -13,10 +13,12 @@ function Products() {
   // const [List_product, setListProduct] = useState([]);
 
   const [product,setProduct]= useState([]);
+  const [updateProduct,setupdateProduct]= useState([]);
   useEffect(()=> {
     axios.get('http://127.0.0.1:8000/products/')
       .then(res => {
         setProduct(res.data);
+      
       })
       .catch(err => console.log(err));
 
@@ -40,7 +42,7 @@ function Products() {
         return;
       }
       
-      axios.delete('http://127.0.0.1:8000/products/13');
+      
       axios.post('http://127.0.0.1:8000/products/', inputProduct)
           .then(data => {
             document.getElementById("insertproduct").reset();
@@ -57,15 +59,25 @@ function Products() {
     }
   }
 
-  function Delete(id){
-    id_delete=id;
-    console.log("delete ", id_delete);
+  function handleDelete(id){
+        
+    console.log("delete ", id);
+    if (window.confirm("Delete a product"))
+    {
+      
+      axios.delete(`http://127.0.0.1:8000/products/${id}/`)
+      .then(data => setProduct( product.filter(item => item.id !== id)))
+      .catch(err => alert("Please try again!"));
+    }
+    
   }
 
   
-  function Update(id){
-    id_update=id;
-    console.log("update ",id_update);
+  async function handleUpdate(id){
+    await setupdateProduct(product.filter(item => item.id === id));
+    console.log("update ",id, updateProduct);
+    // console.log("update ", product[id]);
+
   }
 
   return (
@@ -87,7 +99,7 @@ function Products() {
           <div className="modal-content">
           <div className="modal-header">
               <button type="button" className="close" data-dismiss="modal">&times;</button>
-              <h4 className="modal-title">Modal Header</h4>
+              <h4 className="modal-title">Insert Product</h4>
           </div>
           <div className="modal-body">
                 <form action="#" id="insertproduct">
@@ -126,21 +138,21 @@ function Products() {
           <div className="modal-content">
           <div className="modal-header">
               <button type="button" className="close" data-dismiss="modal">&times;</button>
-              <h4 className="modal-title">Update Modal Header</h4>
+              <h4 className="modal-title">Update Product</h4>
           </div>
           <div className="modal-body">
                 <form action="#">
                   <div class="form-group">
                     <label for="upname">Name:</label>
-                    <input type="text" class="form-control" id="upemail"/>
+                    <input type="text" class="form-control" id="upname"/>
                   </div>
 
                   <div class="form-group">
-                    <label for="upimg">Password:</label>
+                    <label for="upimg">Img:</label>
                     <input type="text" class="form-control" id="upimg"/>
                   </div>
                   <div class="form-group">
-                    <label for="upprice">Password:</label>
+                    <label for="upprice">Price:</label>
                     <input type="number" class="form-control" id="upprice"/>
                   </div>
                 </form>
@@ -155,7 +167,7 @@ function Products() {
       </div>
       </div>
 
-      <ListProduct listrecord= {product}/>
+      <ListProduct listrecord= {product} handleDelete={handleDelete} handleUpdate={handleUpdate}/>
       {/* <div className="table1" >
         <table  className="table table-bordered table-striped ">
           <thead >
