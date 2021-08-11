@@ -13,7 +13,7 @@ function Products() {
   // const [List_product, setListProduct] = useState([]);
 
   const [product,setProduct]= useState([]);
-  const [updateProduct,setupdateProduct]= useState([]);
+  const [updateProduct,setupdateProduct]= useState({});
   useEffect(()=> {
     axios.get('http://127.0.0.1:8000/products/')
       .then(res => {
@@ -60,24 +60,74 @@ function Products() {
   }
 
   function handleDelete(id){
+    try {
+      console.log("delete ", id);
+      if (window.confirm("Delete a product"))
+      {
         
-    console.log("delete ", id);
-    if (window.confirm("Delete a product"))
-    {
-      
-      axios.delete(`http://127.0.0.1:8000/products/${id}/`)
-      .then(data => setProduct( product.filter(item => item.id !== id)))
-      .catch(err => alert("Please try again!"));
+        axios.delete(`http://127.0.0.1:8000/products/${id}/`)
+        .then(data => setProduct( product.filter(item => item.id !== id)))
+        .catch(err => alert("Please try again!"));
+      }
+        
+    } catch (error) {
+      throw error;
     }
+    
     
   }
 
   
   async function handleUpdate(id){
-    await setupdateProduct(product.filter(item => item.id === id));
-    console.log("update ",id, updateProduct);
-    // console.log("update ", product[id]);
+    try {
+      const temp= setupdateProduct((product.filter(item => item.id === id)).pop());
+      
+    } catch (error) {
+      
+      throw error;
+    }
+    
+  }
 
+  function UpdateService(){
+    try {
+      var itemUpdate = {
+        name: document.getElementById('upname').value,
+        img: document.getElementById('upimg').value,
+        price: document.getElementById('upprice').value,
+      };
+     
+      const checkInput = validateBody(ProductSchema, itemUpdate);
+      if (checkInput.status === "fail") {
+        alert(checkInput.message);
+        return;
+      }
+
+      console.log(itemUpdate);
+      // axios.put(`http://127.0.0.1:8000/products/${updateProduct.id}/`, itemUpdate)
+      //     .then(data => {
+      //       itemUpdate.id= updateProduct.id;
+
+      //       // const indexUpdate= product.findIndex(item => item.id ===updateProduct.id);
+      //       // var tempProduct = product;
+      //       // tempProduct[indexUpdate]=updateProduct;
+      //       // setProduct(tempProduct);
+      //       // console.log(indexUpdate);
+
+      //       const tempListProduct=[];
+      //       product.forEach((item)=> {
+      //         if (item.id===itemUpdate.id) 
+      //            tempListProduct.push(itemUpdate);
+      //         else tempListProduct.push(item);
+      //       });
+      //       setProduct(tempListProduct);
+            
+      //     })
+      //     .catch(err => alert("Update failed"));
+    } catch (error) {
+      alert("Update failed");
+      throw error;
+    }
   }
 
   return (
@@ -144,21 +194,21 @@ function Products() {
                 <form action="#">
                   <div class="form-group">
                     <label for="upname">Name:</label>
-                    <input type="text" class="form-control" id="upname"/>
+                    <input type="text" class="form-control" id="upname" defaultValue={updateProduct.name}/>
                   </div>
 
                   <div class="form-group">
                     <label for="upimg">Img:</label>
-                    <input type="text" class="form-control" id="upimg"/>
+                    <input type="text" class="form-control" id="upimg" defaultValue={updateProduct.img}/>
                   </div>
                   <div class="form-group">
                     <label for="upprice">Price:</label>
-                    <input type="number" class="form-control" id="upprice"/>
+                    <input type="number" class="form-control" id="upprice" defaultValue={updateProduct.price}/>
                   </div>
                 </form>
           </div>
           <div className="modal-footer">
-              <button type="button" className="btn btn-success" data-dismiss="modal">Update</button>
+              <button type="button" className="btn btn-success" data-dismiss="modal" onClick={UpdateService}>Update</button>
               <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
           </div>
           </div>
