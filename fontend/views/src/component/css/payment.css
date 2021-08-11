@@ -1,0 +1,23 @@
+/* Styles for wrapping the search box */
+
+.search {
+    width: 60%;
+    margin: 30px auto;
+}
+
+/* Bootstrap 3 text input with search icon */
+
+.has-search .form-control-feedback {
+    right: initial;
+    left: 0;
+    color: #ccc;
+}
+
+.has-search .form-control {
+    padding-right: 12px;
+    padding-left: 34px;
+}
+
+.glyphicon{
+    top: 10;
+}
