@@ -1,9 +1,9 @@
-import Nav from '../component/nav';
-import '../component/css/product.css';
+import Nav from '../../component/nav';
+import '../../component/css/product.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { validateBody } from '../middleware/validateBody.middleware';
-import {ProductSchema} from '../DTO/product.dto';
+import { validateBody } from '../../middleware/validateBody.middleware';
+import {ProductSchema} from '../../DTO/product.dto';
 import ListProduct from './ListProduct';
 
 function Products() {
@@ -40,7 +40,7 @@ function Products() {
         return;
       }
       
-
+      axios.delete('http://127.0.0.1:8000/products/13');
       axios.post('http://127.0.0.1:8000/products/', inputProduct)
           .then(data => {
             document.getElementById("insertproduct").reset();

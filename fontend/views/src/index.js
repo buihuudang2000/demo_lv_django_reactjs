@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import Nav from './component/nav';
 // import Navbar from './component/header_bar';
-import Products from './modules/product';
-import Payment from './modules/payment';
+import Products from './modules/product/product';
+import Payment from './modules/payment/payment';
 import reportWebVitals from './reportWebVitals';
 // import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router';
 import {

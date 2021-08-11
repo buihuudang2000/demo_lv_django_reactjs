@@ -1,5 +1,5 @@
-import Nav from '../component/nav';
-import '../component/css/product.css';
+import Nav from '../../component/nav';
+import '../../component/css/product.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

@@ -7,5 +7,8 @@ class Product(models.Model):
     img = models.TextField(null=True)
     price = models.IntegerField(null=True)
 
+    def __str__(self):
+        return self.name
+
         
 
