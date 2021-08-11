@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
+import { useEffect, useState } from 'react';
 
 
 class Nav extends Component {
+ 
+    setActiveNav(pageIndex){
+        if (pageIndex==this.props.page) return "active";
+        else return "nonactive";
+    };
+  
     render() {
         return (
        
@@ -15,8 +22,8 @@ class Nav extends Component {
                 
                 </div>
                 <ul className="nav navbar-nav">
-                <li><a href="#">Product</a></li>
-                <li><a href="#">Payment</a></li>
+                <li className={this.setActiveNav("products")}><a href="/products">Product</a></li>
+                <li className={this.setActiveNav("payment")}><a href="/payment">Payment</a></li>
                 </ul>
                 <ul className="nav navbar-nav navbar-right">
                 <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>

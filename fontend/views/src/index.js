@@ -4,12 +4,35 @@ import './index.css';
 import App from './App';
 import Nav from './component/nav';
 // import Navbar from './component/header_bar';
-import Body from './component/product';
+import Products from './modules/product';
+import Payment from './modules/payment';
 import reportWebVitals from './reportWebVitals';
+// import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <Body/>
+    <Router>
+    <Switch>
+      
+      <Route path="/products">
+        <Products/>
+      </Route>
+      <Route path="/payment">
+        <Payment/>
+      </Route>
+      <Route path="/">
+        <Products />
+      </Route>
+      
+    </Switch>
+    </Router>
     
   </React.StrictMode>,
   document.getElementById('root')
