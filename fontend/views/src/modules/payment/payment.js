@@ -4,10 +4,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ProductPayment from './ProductPayment';
 import Bill from './Bill';
+import PaymentBox from './PaymentBox';
 import '../../component/css/payment.css';
 
 function Payment() {
-    
+   
     const [select,setSelect]= useState([]);
     const [bill,setBill]= useState([]);
     const [product,setProduct]= useState([]);
@@ -24,6 +25,7 @@ function Payment() {
           .catch(err => console.log(err));
     
       },[]);
+    
     function subItemSelect(id){
         try {
             setSelect(select.map(ele => {
@@ -54,6 +56,7 @@ function Payment() {
                 }
                 return ele;
             }));
+            
         } catch (error) {
             throw error;
         }
@@ -67,19 +70,20 @@ function Payment() {
                 }
                 return ele;
             }));
+            
         } catch (error) {
             throw error;
         }
         
     }
-    function selectItem(id){
+    async function selectItem(id){
         try {
             let isSame = true;
             bill.forEach((ele) =>{
                 if (ele.id === id) isSame=false;
             })
             if (!isSame) return;
-            setBill([...bill,...select.map(ele=> {
+            await setBill([...bill,...select.map(ele=> {
                if (ele.id === id) {
                 return {...ele, total: Number(ele.price)*Number(ele.quantity)};
                } 
@@ -94,7 +98,7 @@ function Payment() {
     function deleteItem(id){
         try {
             setBill(bill.filter(ele => ele.id!==id));
-            
+          
         } catch (error) {
             throw error;
         }
@@ -134,7 +138,8 @@ function Payment() {
             </div>
           
             <div className="col-sm-4">
-                <div >
+                <PaymentBox  bill={bill}/>
+                {/* <div >
                 <form action="#" >
                   <div class="form-group">
                     <label for="name">Name:</label>
@@ -166,7 +171,7 @@ function Payment() {
                   </div>
 
                 </form>
-                </div>
+                </div> */}
                 
             </div>
         </div>
