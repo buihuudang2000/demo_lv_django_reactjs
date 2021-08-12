@@ -1,9 +1,16 @@
+import { useState } from "react";
 
 
 function PaymentBox(props) {
     const  bill=  props.bill;
     const total= bill.reduce((tot, ele) =>{return tot + ele.total;}, 0);
-    
+    const [change, setChange]=useState(0);
+    function updateChange(e){
+        setChange(Number(e.target.value)-total);
+    }
+    function Payment(){
+        alert("Paid!")
+    }
     return(
         <div >
                 <form action="#" >
@@ -24,16 +31,16 @@ function PaymentBox(props) {
 
                   <div class="form-group">
                     <label for="cash">Cash:</label>
-                    <input type="number" class="form-control " name="cash" id="cash"/>
+                    <input type="number" class="form-control " name="cash" id="cash" onChange={updateChange}/>
                   </div>
 
                   <div class="form-group">
                     <label for="change">Change:</label>
-                    <input type="number" class="form-control " name="change" id="change"/>
+                    <input type="number" class="form-control " disabled name="change" id="change" value={change}/>
                   </div>
                   
                   <div class="form-group">
-                    <button type="button" className="btn btn-success btn-block" >Payment</button>
+                    <button type="button" className="btn btn-success btn-block" onClick={Payment}>Payment</button>
                   </div>
 
                 </form>
