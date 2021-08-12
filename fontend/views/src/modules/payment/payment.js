@@ -3,6 +3,7 @@ import '../../component/css/product.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ProductPayment from './ProductPayment';
+import Bill from './Bill';
 import '../../component/css/payment.css';
 
 function Payment() {
@@ -13,13 +14,57 @@ function Payment() {
     useEffect(()=> {
         axios.get('http://127.0.0.1:8000/products/')
           .then(res => {
-            setProduct(res.data);
-            setSelect([{id: 1, img: "abc", name: "dang", price: "100000"}]);
+            setProduct(res.data.map(ele => {
+                ele.quantity=1;
+                return ele;
+            }));
+            
           
           })
           .catch(err => console.log(err));
     
       },[]);
+    function subItemSelect(id){
+        try {
+            setSelect(select.map(ele => {
+                ele.quantity=(ele.quantity-1 <1)?1:ele.quantity-1;
+                return ele;
+            }));
+        } catch (error) {
+            throw error;
+        }
+    }
+    function plusItemSelect(id){
+        try {
+            setSelect(select.map(ele => {
+                ele.quantity=ele.quantity+1;
+                return ele;
+            }));
+        } catch (error) {
+            throw error;
+        }
+        
+    }
+    function selectItem(id){
+        try {
+            setBill(select.map(ele=> {
+               if (ele.id = id) {
+                ele.price= Number(ele.price)*Number(ele.quantity);
+                console.log(ele.price);
+                return {...ele};
+               } 
+               return;
+            }));
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    function searchProduct(e){
+        console.log(product);
+        setSelect((product.filter(item => item.id === Number(e.target.value) )));
+        console.log(e.target.value);
+    }
     return(
         <div>
             <Nav page="payment"/>
@@ -29,7 +74,7 @@ function Payment() {
                     <label  for="search">Search to payment:</label>
                     <div class="form-group has-feedback has-search">
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                        <input type="text" class="form-control" placeholder="Search"  onkeyup={searchProduct(this.value)}/>
+                        <input type="number" class="form-control" placeholder="Search"  onChange={searchProduct}/>
                     </div>
                     {/* <div class="col-xs-10">
                         
@@ -41,11 +86,11 @@ function Payment() {
                 </div>
                 <div class="form-group"> 
                 <label  >Select to payment:</label>
-                <ProductPayment status="select" listrecord={select}/> 
+                <ProductPayment listrecord={select} plus={plusItemSelect} sub={subItemSelect} selectItem={selectItem}/> 
                 </div>
                 <div class="form-group"> 
                 <label  >Bill:</label>
-                <ProductPayment  status="bill" listrecord={bill}/> 
+                <Bill  listrecord={bill}/> 
                 </div>
             </div>
           
@@ -68,13 +113,13 @@ function Payment() {
                   </div>
 
                   <div class="form-group">
-                    <label for="total">Cash:</label>
-                    <input type="number" class="form-control " name="total" id="total"/>
+                    <label for="cash">Cash:</label>
+                    <input type="number" class="form-control " name="cash" id="cash"/>
                   </div>
 
                   <div class="form-group">
-                    <label for="total">Change:</label>
-                    <input type="number" class="form-control " name="total" id="total"/>
+                    <label for="change">Change:</label>
+                    <input type="number" class="form-control " name="change" id="change"/>
                   </div>
                   
                   <div class="form-group">

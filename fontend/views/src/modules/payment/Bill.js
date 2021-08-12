@@ -1,7 +1,7 @@
-
+import axios from 'axios';
 
 function ProductPayment(props) {
-    const [product,status, plus, sub, selectItem]= [props.listrecord, props.status, props.plus, props.sub, props.selectItem];
+    const [product, plus, sub, selectItem]= [props.listrecord, props.plus, props.sub, props.selectItem];
     
     return(
         <div className="table1" >
@@ -11,7 +11,7 @@ function ProductPayment(props) {
               <th>ID</th>
               <th>Image</th>
               <th>Name</th>
-              <th>Price/One
+              <th>Total
                   </th>
               <th>Quantity</th>
               <th className="col-md-2">Action</th>
