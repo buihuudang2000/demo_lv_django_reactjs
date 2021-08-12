@@ -27,7 +27,7 @@ function Payment() {
     function subItemSelect(id){
         try {
             setSelect(select.map(ele => {
-                ele.quantity=(ele.quantity-1 <1)?1:ele.quantity-1;
+                if (ele.id === id) ele.quantity=(ele.quantity-1 <1)?1:ele.quantity-1;
                 return ele;
             }));
         } catch (error) {
@@ -37,7 +37,34 @@ function Payment() {
     function plusItemSelect(id){
         try {
             setSelect(select.map(ele => {
-                ele.quantity=ele.quantity+1;
+                if (ele.id === id) ele.quantity=ele.quantity+1;
+                return ele;
+            }));
+        } catch (error) {
+            throw error;
+        }
+        
+    }
+    function subItemBill(id){
+        try {
+            setBill(bill.map(ele => {
+                if (ele.id === id) {
+                ele.quantity=(ele.quantity-1 <1)?1:ele.quantity-1;
+                ele.total=Number(ele.price)*Number(ele.quantity);
+                }
+                return ele;
+            }));
+        } catch (error) {
+            throw error;
+        }
+    }
+    function plusItemBill(id){
+        try {
+            setBill(bill.map(ele => {
+                if (ele.id === id) {
+                    ele.quantity=ele.quantity+1;
+                    ele.total=Number(ele.price)*Number(ele.quantity);
+                }
                 return ele;
             }));
         } catch (error) {
@@ -47,14 +74,26 @@ function Payment() {
     }
     function selectItem(id){
         try {
-            setBill(select.map(ele=> {
-               if (ele.id = id) {
-                ele.price= Number(ele.price)*Number(ele.quantity);
-                console.log(ele.price);
-                return {...ele};
+            let isSame = true;
+            bill.forEach((ele) =>{
+                if (ele.id === id) isSame=false;
+            })
+            if (!isSame) return;
+            setBill([...bill,...select.map(ele=> {
+               if (ele.id === id) {
+                return {...ele, total: Number(ele.price)*Number(ele.quantity)};
                } 
                return;
-            }));
+            })]);
+            
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    function deleteItem(id){
+        try {
+            setBill(bill.filter(ele => ele.id!==id));
             
         } catch (error) {
             throw error;
@@ -90,7 +129,7 @@ function Payment() {
                 </div>
                 <div class="form-group"> 
                 <label  >Bill:</label>
-                <Bill  listrecord={bill}/> 
+                <Bill  listrecord={bill} plus={plusItemBill} sub={subItemBill} deleteItem={deleteItem}/> 
                 </div>
             </div>
           

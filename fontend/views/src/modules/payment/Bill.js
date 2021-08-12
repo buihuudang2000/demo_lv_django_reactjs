@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 function ProductPayment(props) {
-    const [product, plus, sub, selectItem]= [props.listrecord, props.plus, props.sub, props.selectItem];
+    const [product, plus, sub, deleteItem]= [props.listrecord, props.plus, props.sub, props.deleteItem];
     
     return(
         <div className="table1" >
@@ -23,7 +23,7 @@ function ProductPayment(props) {
                   <td className="col-md-1">{item.id}</td>
                   <td className="col-md-1"> <img src={item.img} className="picture " style={{width: "30px"}} alt="Picture"></img></td>
                   <td>{item.name}</td>
-                  <td className="col-md-2">{item.price}</td>
+                  <td className="col-md-2">{item.total}</td>
                   <td className="col-md-2">
                     <div class="btn-group">
                     <button type="button" class="btn btn-primary"  onClick={()=>sub(item.id)}>-</button>
@@ -32,7 +32,7 @@ function ProductPayment(props) {
                     </div>
                   </td>
                   <td className="col-md-2">
-                    <button onClick={() => selectItem(item.id)} id="update" type="button" className="btn btn-success" data-toggle="modal" data-target="#updateModal"> Select </button>
+                    <button onClick={() => deleteItem(item.id)} id="update" type="button" className="btn btn-danger" data-toggle="modal" data-target="#updateModal"> Delete </button>
                 
                   </td>
                 </tr>
