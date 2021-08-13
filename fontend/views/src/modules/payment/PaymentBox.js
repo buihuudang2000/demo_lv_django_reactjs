@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { PaymentSchema } from "../../DTO/product.dto";
+import {validateBody} from "../../middleware/validateBody.middleware"
 
 function PaymentBox(props) {
     const  bill=  props.bill;
@@ -9,7 +10,18 @@ function PaymentBox(props) {
         setChange(Number(e.target.value)-total);
     }
     function Payment(){
-        alert("Paid!")
+      var payment = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        change: document.getElementById('change').value,
+      };
+     
+      const checkInput = validateBody(PaymentSchema, payment);
+      if (checkInput.status === "fail") {
+        alert(checkInput.message);
+        return;
+      } else alert("Paid!");
+        
     }
     return(
         <div >

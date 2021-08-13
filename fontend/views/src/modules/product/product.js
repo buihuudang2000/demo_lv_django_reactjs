@@ -188,22 +188,17 @@ function Products() {
      
       <UpdateModal updateProduct={updateProduct} UpdateService={UpdateService}/>
       <ListProduct listrecord= {product} handleDelete={handleDelete} handleUpdate={handleUpdate}/>
-      {/* <div className="table1" >
-        <table  className="table table-bordered table-striped ">
-          <thead >
-            <tr>
-              <th>ID</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th className="col-md-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {List_product}
-          </tbody>
-        </table>
+      {/* <div className="paginationitem">
+      <ul class="pagination ">
+        <li><a href="#">&lt;</a></li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">&gt;</a></li>
+      </ul>
       </div> */}
+      
 
       
     </div>

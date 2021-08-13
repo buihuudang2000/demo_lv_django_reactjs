@@ -82,7 +82,10 @@ function Payment() {
             bill.forEach((ele) =>{
                 if (ele.id === id) isSame=false;
             })
-            if (!isSame) return;
+            if (!isSame) {
+                alert("Products have been added to Bill");
+                return;
+            }
             await setBill([...bill,...select.map(ele=> {
                if (ele.id === id) {
                 return {...ele, total: Number(ele.price)*Number(ele.quantity)};
@@ -117,7 +120,7 @@ function Payment() {
                     <label  for="search">Search to payment:</label>
                     <div class="form-group has-feedback has-search">
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                        <input type="number" class="form-control" placeholder="Search"  onChange={searchProduct}/>
+                        <input type="number" class="form-control" placeholder="Search ID"  onChange={searchProduct}/>
                     </div>
                     {/* <div class="col-xs-10">
                         
